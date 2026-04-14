@@ -12,6 +12,12 @@ export function ProductsProvider({ children }) {
   // Load from Supabase on mount
   useEffect(() => {
     async function fetchProducts() {
+      if (!supabase) {
+        console.warn("Supabase client not initialized. Skipping fetch.");
+        setInitialized(true);
+        return;
+      }
+
       try {
         const { data, error } = await supabase
           .from("products")
@@ -40,6 +46,10 @@ export function ProductsProvider({ children }) {
     setProducts((prev) => [newProduct, ...prev]);
 
     // DB Insert
+    if (!supabase) {
+      console.error("Supabase client not initialized");
+      return newProduct;
+    }
     const { error } = await supabase.from("products").insert([newProduct]);
     if (error) {
       console.error("Error adding product:", error);
@@ -58,6 +68,10 @@ export function ProductsProvider({ children }) {
 
     // DB Update (remove created_at if it's there to avoid changing it)
     const { created_at, ...safeUpdates } = updates;
+    if (!supabase) {
+      console.error("Supabase client not initialized");
+      return;
+    }
     const { error } = await supabase.from("products").update(safeUpdates).eq("id", id);
     if (error) {
       console.error("Error updating product:", error);
@@ -69,6 +83,10 @@ export function ProductsProvider({ children }) {
     setProducts((prev) => prev.filter((p) => p.id !== id));
 
     // DB Delete
+    if (!supabase) {
+      console.error("Supabase client not initialized");
+      return;
+    }
     const { error } = await supabase.from("products").delete().eq("id", id);
     if (error) {
       console.error("Error deleting product:", error);
@@ -87,6 +105,10 @@ export function ProductsProvider({ children }) {
     );
 
     // DB Update
+    if (!supabase) {
+      console.error("Supabase client not initialized");
+      return;
+    }
     const { error } = await supabase
       .from("products")
       .update({ visible: newVisibility })
