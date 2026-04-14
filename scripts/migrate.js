@@ -1,0 +1,126 @@
+const { createClient } = require('@supabase/supabase-js');
+const fs = require('fs');
+
+const DEFAULT_PRODUCTS = [
+  {
+    id: "monolith-display-32",
+    sku: "PX-MON-32-OL",
+    title: 'Monolith Display 32"',
+    brand: "MONOLITH",
+    category: "Displays",
+    price: 1299,
+    badge: "Limited",
+    stock: 4,
+    visible: true,
+    tags: ["4K OLED", "240HZ"],
+    description: "The Monolith Display redefines what a monitor can be. With its near-borderless 4K OLED panel and a 240Hz refresh rate, every frame is rendered with surgical precision.",
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDo8bWOkhiR5Ca2EEI80k2kObk0tJbHjf-kn0MhbHkAN_XFE88_O2mMMi-94zJqgMtN3q5eIlru0iv9Q-VsM22I5Jw12FGfpFpOHaCHvzFo0ze0k8G2ljTmjYMRw7bupy6hS1X2sd0xuBGVE911skt4Yat7Khu9EDmREj5VrIvklZAS5xC1J4XgwbNbOukVmPf4uaEaX0FuIVqz2I9lXToVI2chr1N8P0_WH6eQlEtq8_2Oz1ELvNYHk4HV0WvGQOuY3Gd9bplWLo2R",
+  },
+  {
+    id: "audio-core-x",
+    sku: "PX-AUD-CX-BLK",
+    title: "Audio Core X",
+    brand: "CORE LABS",
+    category: "Audio",
+    price: 349,
+    badge: "",
+    stock: 23,
+    visible: true,
+    tags: ["ANC", "48HR"],
+    description: "Active noise cancellation that eliminates up to 40dB of ambient sound, paired with 48 hours of battery life.",
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAqygxONwdhp-RngHi7fMRQ14pDE2p5kwZ78-sHpB6g2w2gD8jKalP-e4by6h9vgCfTMn-4NskghoHir77cCJXSitZl9abMbnYmJiNrO5m7pkMPovt_NE8CZB4pQlWRp-LMlvX6EoXpMH9tiW4hI8ZEjY5v4rb5BtbTiqaP7LOeboHHaQkfJMcnYaNH6XvsGKvG8ozk5yJpNI8eTyHmzJK4eWjdryZaHxFiJ2kY9RYPXsdogoA0F5cfNeXvLWt-E5JsYGFlDHHBrrPI",
+  },
+  {
+    id: "tactile-key-01",
+    sku: "PX-KEY-T01-GY",
+    title: "Tactile Key-01",
+    brand: "TACTILE",
+    category: "Peripherals",
+    price: 189,
+    badge: "",
+    stock: 11,
+    visible: true,
+    tags: ["MECH", "RGB"],
+    description: "Precision mechanical keyboard with hot-swap switches and per-key RGB lighting.",
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAeV5STkbFPpQ_dFMjxYYh5YGngRn4re0VBlxaC6gC-YtgRw15IgMH04uTEkWhfB6FWOpc6D9PqpGUmfQzSiZXpV9818ovcshPDdX35GCpP6iwmvURifPpwNyNpS7ZN1LJsrjfGtWOS6XuV3u-i5o7FYJDppcnQ-BpAnQm2DVcutu_l4g-QFTfjn8_PddwYQo1y-o6yMpS0Iia_uh9vp4CL92wkJcx7xsiWytEGWHpavfzqpPRCXgfkOcH_cmYwlVVngQI5GcL4vfxT",
+  },
+  {
+    id: "pulse-mouse",
+    sku: "PX-MSE-PLS-WL",
+    title: "Pulse Mouse",
+    brand: "PULSE",
+    category: "Peripherals",
+    price: 89,
+    badge: "",
+    stock: 0,
+    visible: true,
+    tags: ["WIRELESS", "8K DPI"],
+    description: "Sleek modern wireless mouse with 8000 DPI sensor and 70h battery life.",
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDD9-5FYQ69aueuArSdTWcDUMIBP7smKt07fH_BTUZJjJDGq25PBnFZ6It1CwbFEVFbb7zSD0KoWzdTvo3TpUBYGeaJ9PopXjsYDoTeLbvR8YGQmBCHghthnmc5TPjrSxNuT1j_DQvt38idQxYwHC-ITx7NnAZu3sh9-YgjnprnTbE817vns4VV652r0EZMuY7tGxHgfs91GEuu4Fd-ehD-GaxcsvWUc-kNUtHVmrK0Yfrm_FIe9ICzaUGqVCDytRXIbZ8MeTZZKdUP",
+  },
+  {
+    id: "optic-v-cinema-rig",
+    sku: "PX-CAM-OPV-12K",
+    title: "Optic-V Cinema Rig",
+    brand: "OPTIC",
+    category: "Cameras",
+    price: 4299,
+    badge: "New",
+    stock: 2,
+    visible: true,
+    tags: ["12K", "L-MOUNT"],
+    description: "12K full-frame sensor milled from aerospace aluminum. Engineered for those who see what others miss.",
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC6DnQNiz4bMXH-AghSMP_30u00zjmme5OqdR-tCyxmemnOsax9qBrccMCl31KBt_iuMn2XGypIIFP3EUAfLN5YASyXNEmIR9YnTWRSIfYK1VO5i0Ym3-hbUIzFN2o3VaRzBUaaWPjwagLuEnMJaz4MrIE82pGVwpHNZckL3Rs2m0gYshvzpo9SwMPEXoXGd0D_TL-YZcIi43JJWaNXPFavb_NY4yK9hxKPdRwSquQHmOpozJ-uwpDWwYBNGbl0j4AKTm9mGKPQAHuL",
+  },
+  {
+    id: "precision-laptop-mk2",
+    sku: "PX-LPT-MK2-5N",
+    title: "Precision Laptop MK2",
+    brand: "PRECIS",
+    category: "Computing",
+    price: 2199,
+    badge: "",
+    stock: 7,
+    visible: true,
+    tags: ["5NM", "OLED"],
+    description: "Ultra-thin precision laptop with 5nm chip and OLED display.",
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDs4T2i_AHbmdXQ9bIouiFVLZ2WjqmZq5CgjhbQPCWvoj0nYZB9GOt6hyvp1OUOXIo2nfsICb25ztACtNC-NWWkW6sPdF0m5wSavFxixDYNfE7YOdK8mn_1r1v4uEW3Kbm2Jk4VACjG7FBtDUUXzA0mYA-sVsEAd4I8T_lYDXMD8u068W-AhZX9hHi9bCFHxoeS6tl-2_dzbvFmS1TinOpae0EhdTe2sqE-FpyPkHFT5zUbip8XWdPh5URpS4FBwpETr4daoeDUo6_1",
+  }
+];
+
+async function migrate() {
+  const envFile = fs.readFileSync('.env.local', 'utf8');
+  let url = '', key = '';
+  envFile.split('\n').forEach(l => {
+    if (l.startsWith('NEXT_PUBLIC_SUPABASE_URL=')) url = l.split('=')[1].trim();
+    if (l.startsWith('NEXT_PUBLIC_SUPABASE_ANON_KEY=')) key = l.split('=')[1].trim();
+  });
+
+  const supabase = createClient(url, key);
+
+  console.log('Migrando productos a Supabase...');
+  for (const p of DEFAULT_PRODUCTS) {
+    const { error } = await supabase.from('products').upsert({
+      id: p.id,
+      title: p.title,
+      brand: p.brand,
+      sku: p.sku,
+      category: p.category,
+      price: p.price,
+      stock: p.stock,
+      badge: p.badge,
+      description: p.description,
+      image: p.image,
+      tags: p.tags,
+      visible: p.visible
+    });
+    if (error) {
+      console.error('Error insertando producto', p.title, '>>', error);
+    } else {
+      console.log('✓', p.title);
+    }
+  }
+  console.log('¡Migración completa!');
+}
+
+migrate();

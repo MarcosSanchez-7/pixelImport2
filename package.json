@@ -1,0 +1,26 @@
+{
+  "name": "pixelimport",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.103.0",
+    "cloudinary": "^2.9.0",
+    "next": "^15.3.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4.0.0",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.0",
+    "postcss": "^8",
+    "tailwindcss": "^4.0.0"
+  }
+}
