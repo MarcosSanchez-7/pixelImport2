@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { toast } from "react-toastify";
 import { useProducts } from "@/context/ProductsContext";
 import { useCart } from "@/context/CartContext";
 import { useFavorites } from "@/context/FavoritesContext";
@@ -18,6 +19,16 @@ function ProductCard({ product }) {
   const { addToCart } = useCart();
   const { isFavorite, toggleFavorite } = useFavorites();
   const fav = isFavorite(product.id);
+
+  const handleAdd = () => {
+    addToCart(product);
+    toast.success(`${product.title} añadido al carrito`, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: true,
+      icon: "🛒",
+    });
+  };
 
   return (
     <div className="group bg-white flex flex-col border border-zinc-100 hover:border-zinc-300 hover:shadow-md transition-all duration-300">
@@ -98,7 +109,7 @@ function ProductCard({ product }) {
         <div className="flex items-center justify-between mt-auto pt-2 border-t border-zinc-100">
           <span className="text-base font-light">Gs. {Number(product.price).toLocaleString("es-PY")}</span>
           <button
-            onClick={() => addToCart(product)}
+            onClick={handleAdd}
             disabled={product.stock === 0}
             className="flex items-center gap-1.5 bg-black text-white text-[9px] font-black uppercase tracking-widest px-3 py-2 hover:bg-zinc-700 transition-colors active:scale-95 duration-100 disabled:opacity-30 disabled:cursor-not-allowed"
           >

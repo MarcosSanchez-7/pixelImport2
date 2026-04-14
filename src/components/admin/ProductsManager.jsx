@@ -149,26 +149,25 @@ export default function ProductsManager() {
   return (
     <div className="flex-1 flex flex-col min-h-0 bg-zinc-900">
       {/* ── Header ── */}
-      <div className="px-8 py-7 border-b border-zinc-800 flex items-center justify-between shrink-0">
+      <div className="px-4 sm:px-8 py-5 sm:py-7 border-b border-zinc-800 flex items-center justify-between shrink-0">
         <div>
           <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-bold mb-1">
             CATALOGUE
           </p>
-          <h1 className="text-white text-2xl font-black tracking-tight">Products</h1>
+          <h1 className="text-white text-xl sm:text-2xl font-black tracking-tight">Products</h1>
         </div>
         <button
           onClick={openAdd}
-          className="flex items-center gap-2 bg-white text-black px-5 py-2.5 text-xs font-black uppercase tracking-widest hover:bg-zinc-100 transition-colors active:scale-95 duration-150"
+          className="flex items-center gap-2 bg-white text-black px-3 sm:px-5 py-2.5 text-xs font-black uppercase tracking-widest hover:bg-zinc-100 transition-colors active:scale-95 duration-150"
         >
-          <span className="material-symbols-outlined" style={{ fontSize: "16px" }}>
-            add
-          </span>
-          Add Product
+          <span className="material-symbols-outlined" style={{ fontSize: "16px" }}>add</span>
+          <span className="hidden sm:inline">Add Product</span>
+          <span className="sm:hidden">Add</span>
         </button>
       </div>
 
       {/* ── Filters ── */}
-      <div className="px-8 py-4 border-b border-zinc-800 flex items-center gap-4 shrink-0 flex-wrap gap-y-3">
+      <div className="px-4 sm:px-8 py-3 sm:py-4 border-b border-zinc-800 flex items-center gap-3 shrink-0 flex-wrap gap-y-3">
         {/* Search */}
         <div className="relative min-w-[220px]">
           <span
@@ -218,14 +217,11 @@ export default function ProductsManager() {
         </div>
       </div>
 
-      {/* ── Table ── */}
+      {/* ── Product List ── */}
       <div className="flex-1 overflow-y-auto">
         {filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-32 gap-4">
-            <span
-              className="material-symbols-outlined text-zinc-700"
-              style={{ fontSize: "48px" }}
-            >
+          <div className="flex flex-col items-center justify-center py-24 gap-4">
+            <span className="material-symbols-outlined text-zinc-700" style={{ fontSize: "48px" }}>
               inventory_2
             </span>
             <p className="text-zinc-600 text-sm">No products found</p>
@@ -237,184 +233,163 @@ export default function ProductsManager() {
             </button>
           </div>
         ) : (
-          <table className="w-full">
-            <thead className="sticky top-0 bg-zinc-900 z-10 border-b border-zinc-800">
-              <tr>
-                {["Product", "Category", "Price", "Stock", "Visibility", "Actions"].map(
-                  (h) => (
+          <>
+            {/* ── Desktop table ── */}
+            <table className="w-full hidden sm:table">
+              <thead className="sticky top-0 bg-zinc-900 z-10 border-b border-zinc-800">
+                <tr>
+                  {["Product", "Category", "Price", "Stock", "Visibility", "Actions"].map((h) => (
                     <th
                       key={h}
                       className="text-left text-[9px] font-black uppercase tracking-widest text-zinc-600 px-4 py-3 first:pl-8 last:pr-8"
                     >
                       {h}
                     </th>
-                  )
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((product) => (
-                <tr
-                  key={product.id}
-                  className={`border-b border-zinc-800/40 hover:bg-zinc-800/30 transition-colors ${
-                    !product.visible ? "opacity-40" : ""
-                  }`}
-                >
-                  {/* Product */}
-                  <td className="px-4 py-3 pl-8">
-                    <div className="flex items-center gap-3">
-                      <div className="w-11 h-11 rounded bg-zinc-800 shrink-0 overflow-hidden flex items-center justify-center border border-zinc-700/50">
-                        {product.image ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={product.image}
-                            alt={product.title}
-                            className="w-full h-full object-contain p-1.5"
-                          />
-                        ) : (
-                          <span
-                            className="material-symbols-outlined text-zinc-600"
-                            style={{ fontSize: "20px" }}
-                          >
-                            image
-                          </span>
-                        )}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2">
-                          <p className="text-white text-sm font-semibold truncate">
-                            {product.title}
-                          </p>
-                          {product.badge && (
-                            <span className="text-[8px] font-black uppercase tracking-widest px-2 py-0.5 bg-zinc-700 text-zinc-300 rounded shrink-0">
-                              {product.badge}
-                            </span>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((product) => (
+                  <tr
+                    key={product.id}
+                    className={`border-b border-zinc-800/40 hover:bg-zinc-800/30 transition-colors ${!product.visible ? "opacity-40" : ""}`}
+                  >
+                    {/* Product */}
+                    <td className="px-4 py-3 pl-8">
+                      <div className="flex items-center gap-3">
+                        <div className="w-11 h-11 rounded bg-zinc-800 shrink-0 overflow-hidden flex items-center justify-center border border-zinc-700/50">
+                          {product.image ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={product.image} alt={product.title} className="w-full h-full object-contain p-1.5" />
+                          ) : (
+                            <span className="material-symbols-outlined text-zinc-600" style={{ fontSize: "20px" }}>image</span>
                           )}
                         </div>
-                        <p className="text-zinc-600 text-[10px] font-mono tracking-widest">
-                          {product.sku}
-                        </p>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2">
+                            <p className="text-white text-sm font-semibold truncate">{product.title}</p>
+                            {product.badge && (
+                              <span className="text-[8px] font-black uppercase tracking-widest px-2 py-0.5 bg-zinc-700 text-zinc-300 rounded shrink-0">
+                                {product.badge}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-zinc-600 text-[10px] font-mono tracking-widest">{product.sku}</p>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-
-                  {/* Category */}
-                  <td className="px-4 py-3">
-                    <span className="text-zinc-400 text-xs font-semibold uppercase tracking-wide">
-                      {product.category}
-                    </span>
-                  </td>
-
-                  {/* Price */}
-                  <td className="px-4 py-3">
-                    <span className="text-white text-sm font-light">
-                      Gs. {Number(product.price).toLocaleString("es-PY")}
-                    </span>
-                  </td>
-
-                  {/* Stock */}
-                  <td className="px-4 py-3">
-                    <span
-                      className={`text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded ${
-                        product.stock === 0
-                          ? "text-red-400 bg-red-950"
-                          : product.stock < 5
-                          ? "text-amber-400 bg-amber-950"
-                          : "text-emerald-400 bg-emerald-950"
-                      }`}
-                    >
-                      {product.stock === 0 ? "Out of Stock" : `${product.stock} units`}
-                    </span>
-                  </td>
-
-                  {/* Visibility */}
-                  <td className="px-4 py-3">
-                    <button
-                      onClick={() => toggleVisibility(product.id)}
-                      className={`flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest px-3 py-1.5 rounded transition-all cursor-pointer ${
-                        product.visible
-                          ? "text-emerald-400 bg-emerald-950 hover:bg-emerald-900"
-                          : "text-zinc-600 bg-zinc-800 hover:bg-zinc-700 hover:text-zinc-400"
-                      }`}
-                      title={product.visible ? "Click to hide" : "Click to show"}
-                    >
-                      <span
-                        className="material-symbols-outlined"
-                        style={{ fontSize: "13px" }}
-                      >
-                        {product.visible ? "visibility" : "visibility_off"}
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className="text-zinc-400 text-xs font-semibold uppercase tracking-wide">{product.category}</span>
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className="text-white text-sm font-light">Gs. {Number(product.price).toLocaleString("es-PY")}</span>
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className={`text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded ${product.stock === 0 ? "text-red-400 bg-red-950" : product.stock < 5 ? "text-amber-400 bg-amber-950" : "text-emerald-400 bg-emerald-950"}`}>
+                        {product.stock === 0 ? "Out of Stock" : `${product.stock} units`}
                       </span>
-                      {product.visible ? "Visible" : "Hidden"}
-                    </button>
-                  </td>
+                    </td>
+                    <td className="px-4 py-3">
+                      <button
+                        onClick={() => toggleVisibility(product.id)}
+                        className={`flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest px-3 py-1.5 rounded transition-all cursor-pointer ${product.visible ? "text-emerald-400 bg-emerald-950 hover:bg-emerald-900" : "text-zinc-600 bg-zinc-800 hover:bg-zinc-700 hover:text-zinc-400"}`}
+                      >
+                        <span className="material-symbols-outlined" style={{ fontSize: "13px" }}>
+                          {product.visible ? "visibility" : "visibility_off"}
+                        </span>
+                        {product.visible ? "Visible" : "Hidden"}
+                      </button>
+                    </td>
+                    <td className="px-4 py-3 pr-8">
+                      <div className="flex items-center gap-1.5">
+                        <button onClick={() => openEdit(product)} className="p-2 rounded text-zinc-500 hover:text-white hover:bg-zinc-700 transition-all" title="Edit">
+                          <span className="material-symbols-outlined" style={{ fontSize: "16px" }}>edit</span>
+                        </button>
+                        {deleteConfirmId === product.id ? (
+                          <div className="flex items-center gap-1 bg-red-950 border border-red-800 rounded px-2 py-1">
+                            <span className="text-red-400 text-[9px] font-bold uppercase tracking-wide mr-1">Confirm?</span>
+                            <button onClick={() => { deleteProduct(product.id); setDeleteConfirmId(null); }} className="text-red-400 hover:text-red-200 transition-colors">
+                              <span className="material-symbols-outlined" style={{ fontSize: "14px" }}>check</span>
+                            </button>
+                            <button onClick={() => setDeleteConfirmId(null)} className="text-zinc-500 hover:text-white transition-colors">
+                              <span className="material-symbols-outlined" style={{ fontSize: "14px" }}>close</span>
+                            </button>
+                          </div>
+                        ) : (
+                          <button onClick={() => setDeleteConfirmId(product.id)} className="p-2 rounded text-zinc-500 hover:text-red-400 hover:bg-red-950 transition-all" title="Delete">
+                            <span className="material-symbols-outlined" style={{ fontSize: "16px" }}>delete</span>
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {/* ── Mobile cards ── */}
+            <div className="sm:hidden divide-y divide-zinc-800/60">
+              {filtered.map((product) => (
+                <div
+                  key={product.id}
+                  className={`px-4 py-4 flex items-center gap-3 ${!product.visible ? "opacity-40" : ""}`}
+                >
+                  {/* Thumbnail */}
+                  <div className="w-14 h-14 rounded bg-zinc-800 shrink-0 overflow-hidden flex items-center justify-center border border-zinc-700/50">
+                    {product.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={product.image} alt={product.title} className="w-full h-full object-contain p-1" />
+                    ) : (
+                      <span className="material-symbols-outlined text-zinc-600" style={{ fontSize: "22px" }}>image</span>
+                    )}
+                  </div>
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-white text-sm font-semibold truncate">{product.title}</p>
+                    <p className="text-zinc-500 text-[10px] font-mono">{product.sku}</p>
+                    <div className="flex items-center gap-2 mt-1 flex-wrap">
+                      <span className="text-zinc-300 text-xs font-light">
+                        Gs. {Number(product.price).toLocaleString("es-PY")}
+                      </span>
+                      <span className={`text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded ${product.stock === 0 ? "text-red-400 bg-red-950" : product.stock < 5 ? "text-amber-400 bg-amber-950" : "text-emerald-400 bg-emerald-950"}`}>
+                        {product.stock === 0 ? "No stock" : `${product.stock}u`}
+                      </span>
+                    </div>
+                  </div>
 
                   {/* Actions */}
-                  <td className="px-4 py-3 pr-8">
-                    <div className="flex items-center gap-1.5">
-                      <button
-                        onClick={() => openEdit(product)}
-                        className="p-2 rounded text-zinc-500 hover:text-white hover:bg-zinc-700 transition-all"
-                        title="Edit product"
-                      >
-                        <span
-                          className="material-symbols-outlined"
-                          style={{ fontSize: "16px" }}
-                        >
-                          edit
-                        </span>
-                      </button>
-
-                      {deleteConfirmId === product.id ? (
-                        <div className="flex items-center gap-1 bg-red-950 border border-red-800 rounded px-2 py-1">
-                          <span className="text-red-400 text-[9px] font-bold uppercase tracking-wide mr-1">
-                            Confirm?
-                          </span>
-                          <button
-                            onClick={() => {
-                              deleteProduct(product.id);
-                              setDeleteConfirmId(null);
-                            }}
-                            className="text-red-400 hover:text-red-200 transition-colors"
-                          >
-                            <span
-                              className="material-symbols-outlined"
-                              style={{ fontSize: "14px" }}
-                            >
-                              check
-                            </span>
-                          </button>
-                          <button
-                            onClick={() => setDeleteConfirmId(null)}
-                            className="text-zinc-500 hover:text-white transition-colors"
-                          >
-                            <span
-                              className="material-symbols-outlined"
-                              style={{ fontSize: "14px" }}
-                            >
-                              close
-                            </span>
-                          </button>
-                        </div>
-                      ) : (
-                        <button
-                          onClick={() => setDeleteConfirmId(product.id)}
-                          className="p-2 rounded text-zinc-500 hover:text-red-400 hover:bg-red-950 transition-all"
-                          title="Delete product"
-                        >
-                          <span
-                            className="material-symbols-outlined"
-                            style={{ fontSize: "16px" }}
-                          >
-                            delete
-                          </span>
+                  <div className="flex items-center gap-1 shrink-0">
+                    <button
+                      onClick={() => toggleVisibility(product.id)}
+                      className={`p-2 rounded transition-all ${product.visible ? "text-emerald-400 hover:bg-emerald-950" : "text-zinc-600 hover:bg-zinc-800"}`}
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>
+                        {product.visible ? "visibility" : "visibility_off"}
+                      </span>
+                    </button>
+                    <button onClick={() => openEdit(product)} className="p-2 rounded text-zinc-500 hover:text-white hover:bg-zinc-700 transition-all">
+                      <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>edit</span>
+                    </button>
+                    {deleteConfirmId === product.id ? (
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => { deleteProduct(product.id); setDeleteConfirmId(null); }} className="p-2 text-red-400">
+                          <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>check</span>
                         </button>
-                      )}
-                    </div>
-                  </td>
-                </tr>
+                        <button onClick={() => setDeleteConfirmId(null)} className="p-2 text-zinc-500">
+                          <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>close</span>
+                        </button>
+                      </div>
+                    ) : (
+                      <button onClick={() => setDeleteConfirmId(product.id)} className="p-2 rounded text-zinc-500 hover:text-red-400 hover:bg-red-950 transition-all">
+                        <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>delete</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </>
         )}
       </div>
 
@@ -428,9 +403,9 @@ export default function ProductsManager() {
           />
 
           {/* Slide panel */}
-          <div className="w-full max-w-lg bg-zinc-900 border-l border-zinc-700 h-full overflow-y-auto flex flex-col shadow-2xl">
+          <div className="w-full max-w-full sm:max-w-lg bg-zinc-900 border-l border-zinc-700 h-full overflow-y-auto flex flex-col shadow-2xl">
             {/* Modal Header */}
-            <div className="flex items-center justify-between px-8 py-6 border-b border-zinc-800 shrink-0">
+            <div className="flex items-center justify-between px-4 sm:px-8 py-5 sm:py-6 border-b border-zinc-800 shrink-0">
               <div>
                 <p className="text-zinc-500 text-[9px] uppercase tracking-widest font-bold mb-1">
                   {editingId ? "EDITING PRODUCT" : "NEW PRODUCT"}
@@ -450,7 +425,7 @@ export default function ProductsManager() {
             </div>
 
             {/* Modal Body */}
-            <div className="flex-1 px-8 py-6 space-y-6 overflow-y-auto">
+            <div className="flex-1 px-4 sm:px-8 py-6 space-y-6 overflow-y-auto">
               {/* Image Upload */}
               <div>
                 <label className="text-zinc-400 text-[10px] font-black uppercase tracking-widest block mb-3">
@@ -711,7 +686,7 @@ export default function ProductsManager() {
             </div>
 
             {/* Modal Footer */}
-            <div className="px-8 py-6 border-t border-zinc-800 flex items-center gap-3 shrink-0">
+            <div className="px-4 sm:px-8 py-5 sm:py-6 border-t border-zinc-800 flex items-center gap-3 shrink-0">
               <button
                 onClick={closeModal}
                 className="flex-1 py-3 text-xs font-black uppercase tracking-widest text-zinc-400 border border-zinc-700 rounded hover:bg-zinc-800 hover:text-white transition-all"

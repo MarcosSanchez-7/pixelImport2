@@ -18,7 +18,7 @@ export default function CartDrawer() {
       />
 
       {/* Panel */}
-      <div className="w-full max-w-md bg-white h-full flex flex-col shadow-2xl border-l border-zinc-200">
+      <div className="w-full max-w-full sm:max-w-md bg-white h-full flex flex-col shadow-2xl border-l border-zinc-200">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-zinc-100">
           <div className="flex items-center gap-3">

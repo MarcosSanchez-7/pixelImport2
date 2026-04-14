@@ -101,14 +101,14 @@ export default function AdminDashboard() {
   return (
     <div className="flex-1 overflow-y-auto bg-zinc-900">
       {/* Header */}
-      <div className="px-8 py-7 border-b border-zinc-800">
+      <div className="px-4 sm:px-8 py-5 sm:py-7 border-b border-zinc-800">
         <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-bold mb-1">
           OVERVIEW
         </p>
-        <h1 className="text-white text-2xl font-black tracking-tight">Dashboard</h1>
+        <h1 className="text-white text-xl sm:text-2xl font-black tracking-tight">Dashboard</h1>
       </div>
 
-      <div className="p-8 space-y-8">
+      <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
         {/* Stats grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard

@@ -42,8 +42,8 @@ export default function HomePage() {
         <BestSellersSection />
 
         {/* ── Featured Product ── */}
-        <section className="py-32 px-8 bg-[var(--color-surface)]">
-          <div className="max-w-[1920px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+        <section className="py-12 sm:py-20 lg:py-24 px-4 sm:px-8 bg-[var(--color-surface)]">
+          <div className="max-w-[1920px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
             <div className="order-2 lg:order-1">
               <div className="relative aspect-square bg-[var(--color-surface-container-high)] overflow-hidden">
                 <Image
@@ -52,7 +52,7 @@ export default function HomePage() {
                   fill
                   className="object-cover"
                 />
-                <div className="absolute bottom-0 left-0 p-12 bg-white/40 backdrop-blur-md max-w-xs">
+                <div className="absolute bottom-0 left-0 p-5 sm:p-8 lg:p-12 bg-white/40 backdrop-blur-md max-w-xs">
                   <p className="text-[10px] font-bold uppercase tracking-[0.3em] mb-2">
                     Import Origin
                   </p>
@@ -65,20 +65,20 @@ export default function HomePage() {
             </div>
 
             <div className="order-1 lg:order-2">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-outline)] font-bold mb-4 block">
+              <span className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-outline)] font-bold mb-3 block">
                 NEW ARRIVAL
               </span>
-              <h2 className="text-6xl font-black tracking-tighter uppercase mb-8 leading-[0.95]">
+              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter uppercase mb-5 sm:mb-8 leading-[0.95]">
                 OPTIC-V
                 <br />
                 CINEMA RIG
               </h2>
-              <p className="text-[var(--color-on-surface-variant)] text-lg leading-relaxed mb-12">
+              <p className="text-[var(--color-on-surface-variant)] text-base sm:text-lg leading-relaxed mb-8 sm:mb-10">
                 Engineered for those who see what others miss. The Optic-V
                 offers a 12K sensor in a chassis that weighs less than a
                 standard DSLR. Milled from a single block of aerospace aluminum.
               </p>
-              <div className="grid grid-cols-2 gap-12 mb-12">
+              <div className="grid grid-cols-2 gap-5 sm:gap-8 mb-8 sm:mb-10">
                 {[
                   { label: "Sensor", value: "Full Frame 12K" },
                   { label: "Dynamic Range", value: "16+ Stops" },
@@ -86,7 +86,7 @@ export default function HomePage() {
                   { label: "Weight", value: "840g Body Only" },
                 ].map(({ label, value }) => (
                   <div key={label}>
-                    <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-outline)] mb-2">
+                    <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-outline)] mb-1">
                       {label}
                     </p>
                     <p className="text-sm font-medium uppercase">{value}</p>
@@ -95,7 +95,7 @@ export default function HomePage() {
               </div>
               <Link
                 href="/products/optic-v-cinema-rig"
-                className="w-full border border-[var(--color-primary)] py-6 text-xs font-black uppercase tracking-[0.3em] hover:bg-[var(--color-primary)] hover:text-[var(--color-on-primary)] transition-all duration-300 flex items-center justify-center"
+                className="w-full border border-[var(--color-primary)] py-4 sm:py-5 text-xs font-black uppercase tracking-[0.3em] hover:bg-[var(--color-primary)] hover:text-[var(--color-on-primary)] transition-all duration-300 flex items-center justify-center"
               >
                 Explore Configuration
               </Link>
@@ -104,39 +104,39 @@ export default function HomePage() {
         </section>
 
         {/* ── Reviews ── */}
-        <section className="py-32 px-8 bg-[var(--color-surface-container-high)]">
+        <section className="py-12 sm:py-20 lg:py-24 px-4 sm:px-8 bg-[var(--color-surface-container-high)]">
           <div className="max-w-[1920px] mx-auto">
-            <div className="text-center mb-20">
-              <h2 className="text-xs font-bold uppercase tracking-[0.4em] mb-4">
+            <div className="text-center mb-10 sm:mb-16">
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[var(--color-outline)] mb-3 block">
                 Verification // Community
-              </h2>
-              <p className="text-4xl font-black uppercase tracking-tighter">
+              </span>
+              <p className="text-2xl sm:text-4xl font-black uppercase tracking-tighter">
                 Trusted by Architects of Tech
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
               {reviews.map(({ text, name, role }) => (
                 <div
                   key={name}
-                  className="bg-[var(--color-surface)] p-12 border-l border-[var(--color-primary)]"
+                  className="bg-[var(--color-surface)] p-7 sm:p-10 border-l-2 border-[var(--color-primary)] hover:shadow-md transition-shadow duration-300"
                 >
-                  <div className="flex gap-1 mb-6">
+                  <div className="flex gap-0.5 mb-4">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <span
                         key={i}
-                        className="material-symbols-outlined text-xs"
-                        style={{ fontVariationSettings: "'FILL' 1" }}
+                        className="material-symbols-outlined"
+                        style={{ fontVariationSettings: "'FILL' 1", fontSize: "14px" }}
                       >
                         star
                       </span>
                     ))}
                   </div>
-                  <p className="text-lg leading-relaxed mb-8 italic">{text}</p>
+                  <p className="text-sm sm:text-base leading-relaxed mb-6 italic text-[var(--color-on-surface-variant)]">{text}</p>
                   <div>
                     <p className="text-[10px] font-bold uppercase tracking-widest">
                       {name}
                     </p>
-                    <p className="text-[9px] text-[var(--color-outline)] uppercase mt-1">
+                    <p className="text-[9px] text-[var(--color-outline)] uppercase mt-1 tracking-widest">
                       {role}
                     </p>
                   </div>

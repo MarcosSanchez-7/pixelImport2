@@ -12,15 +12,22 @@ const navItems = [
   { href: "/admin/settings", label: "Settings", icon: "settings" },
 ];
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ isOpen, onClose }) {
   const pathname = usePathname();
 
   return (
-    <aside className="fixed top-0 left-0 h-screen w-60 bg-zinc-950 border-r border-zinc-800 flex flex-col z-50">
+    <aside
+      className={`
+        fixed top-0 left-0 h-screen w-60 bg-zinc-950 border-r border-zinc-800
+        flex flex-col z-50 transition-transform duration-300 ease-in-out
+        ${isOpen ? "translate-x-0" : "-translate-x-full"}
+        md:translate-x-0
+      `}
+    >
       {/* Logo */}
-      <div className="px-6 py-6 border-b border-zinc-800">
+      <div className="px-6 py-5 border-b border-zinc-800 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group" target="_blank">
-          <div className="w-8 h-8 bg-white flex items-center justify-center">
+          <div className="w-8 h-8 bg-white flex items-center justify-center shrink-0">
             <span className="text-black font-black text-xs">PX</span>
           </div>
           <div>
@@ -32,10 +39,18 @@ export default function AdminSidebar() {
             </p>
           </div>
         </Link>
+        {/* Close button — only on mobile */}
+        <button
+          onClick={onClose}
+          className="md:hidden w-8 h-8 flex items-center justify-center text-zinc-500 hover:text-white hover:bg-zinc-800 rounded transition-all"
+          aria-label="Close menu"
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>close</span>
+        </button>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
+      <nav className="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
         <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-zinc-600 px-3 mb-3">
           Management
         </p>
@@ -46,16 +61,14 @@ export default function AdminSidebar() {
             <Link
               key={href}
               href={href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded text-sm font-medium transition-all duration-150 group ${
+              onClick={onClose}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded text-sm font-medium transition-all duration-150 ${
                 isActive
                   ? "bg-white text-black"
                   : "text-zinc-400 hover:text-white hover:bg-zinc-800"
               }`}
             >
-              <span
-                className="material-symbols-outlined text-[18px]"
-                style={{ fontSize: "18px" }}
-              >
+              <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>
                 {icon}
               </span>
               <span className="tracking-wide text-xs font-semibold uppercase tracking-widest">
@@ -69,16 +82,15 @@ export default function AdminSidebar() {
         })}
       </nav>
 
-      {/* Bottom: View site + User */}
+      {/* Bottom */}
       <div className="px-3 py-4 border-t border-zinc-800 space-y-2">
         <Link
           href="/"
           target="_blank"
+          onClick={onClose}
           className="flex items-center gap-3 px-3 py-2.5 rounded text-zinc-500 hover:text-white hover:bg-zinc-800 transition-all duration-150 text-xs font-semibold uppercase tracking-widest"
         >
-          <span className="material-symbols-outlined text-[18px]" style={{ fontSize: "18px" }}>
-            open_in_new
-          </span>
+          <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>open_in_new</span>
           View Store
         </Link>
         <div className="flex items-center gap-3 px-3 py-3 rounded bg-zinc-900">
