@@ -103,3 +103,49 @@ body {
 .tonal-shift {
   transition: background-color 0.3s ease;
 }
+
+/* ── Scroll Reveal Animations ── */
+.sr-fade-up {
+  opacity: 0;
+  transform: translateY(52px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sr-fade-in {
+  opacity: 0;
+  transition: opacity 0.85s ease;
+}
+.sr-fade-left {
+  opacity: 0;
+  transform: translateX(-52px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sr-fade-right {
+  opacity: 0;
+  transform: translateX(52px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sr-scale {
+  opacity: 0;
+  transform: scale(0.93) translateY(28px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sr-visible {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sr-fade-up,
+  .sr-fade-in,
+  .sr-fade-left,
+  .sr-fade-right,
+  .sr-scale {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

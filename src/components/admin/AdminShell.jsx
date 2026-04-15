@@ -10,12 +10,13 @@ export default function AdminShell({ children }) {
 
   // Page title from pathname
   const titles = {
-    "/admin": "Dashboard",
-    "/admin/products": "Products",
-    "/admin/storefront": "Storefront",
-    "/admin/settings": "Settings",
-    "/admin/media": "Media",
-    "/admin/orders": "Orders",
+    "/admin": "Panel",
+    "/admin/products": "Productos",
+    "/admin/categories": "Categorías",
+    "/admin/storefront": "Tienda",
+    "/admin/settings": "Ajustes",
+    "/admin/media": "Multimedia",
+    "/admin/orders": "Pedidos",
   };
   const pageTitle = titles[pathname] ?? "Admin";
 

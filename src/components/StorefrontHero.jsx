@@ -1,30 +1,170 @@
 "use client";
 
-import Image from "next/image";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useStorefront } from "@/context/StorefrontContext";
 
+const FALLBACK_SLIDES = [
+  {
+    id: "fallback-1",
+    image: "https://images.unsplash.com/photo-1593640408182-31c228b37b29?q=80&w=2940&auto=format&fit=crop",
+    badge: "CURATED SELECTION",
+    title: "PREMIUM\nGAMING GEAR",
+    subtitle: "High-performance peripherals imported directly, no middleman.",
+  },
+];
+
 export default function StorefrontHero() {
   const { settings, initialized } = useStorefront();
+  const [current, setCurrent] = useState(0);
 
-  if (!initialized) return null;
+  const slides =
+    initialized && settings.heroSlides?.length > 0
+      ? settings.heroSlides
+      : FALLBACK_SLIDES;
+
+  const total = slides.length;
+
+  const go = (dir) => setCurrent((c) => (c + dir + total) % total);
+
+  // Auto-advance every 5 s
+  useEffect(() => {
+    const t = setInterval(() => setCurrent((c) => (c + 1) % total), 5000);
+    return () => clearInterval(t);
+  }, [total]);
+
+  if (!initialized) {
+    return (
+      <div className="mt-16 h-[calc(100svh-4rem)] bg-zinc-200 animate-pulse" />
+    );
+  }
 
   return (
     <>
-      {/* Marquee — repeated enough times to ensure it spans across even ultra-wide PC monitors without gaps */}
+      {/* ── Full-screen carousel ── */}
+      <div className="mt-16 relative overflow-hidden h-[calc(100svh-4rem)] bg-black select-none">
+
+        {/* Slides track */}
+        <div
+          className="flex h-full"
+          style={{
+            width: `${total * 100}%`,
+            transform: `translateX(-${current * (100 / total)}%)`,
+            transition: "transform 700ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+          }}
+        >
+          {slides.map((slide, i) => (
+            <div
+              key={i}
+              className="relative h-full shrink-0"
+              style={{ width: `${100 / total}%` }}
+            >
+              {/* Background image */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={slide.image}
+                alt={slide.title || "Slide"}
+                className="w-full h-full object-cover"
+              />
+
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
+
+              {/* Text */}
+              <div className="absolute inset-0 flex items-center px-8 sm:px-16 lg:px-28">
+                <div className="max-w-2xl">
+                  {slide.badge && (
+                    <span className="text-[10px] uppercase tracking-[0.35em] text-white/60 font-bold mb-5 block">
+                      {slide.badge}
+                    </span>
+                  )}
+                  <h1 className="text-[3rem] sm:text-[5rem] lg:text-[6.5rem] font-black tracking-tighter uppercase leading-[0.85] text-white mb-6 whitespace-pre-line">
+                    {slide.title}
+                  </h1>
+                  {slide.subtitle && (
+                    <p className="text-white/60 text-sm sm:text-base leading-relaxed mb-10 max-w-sm">
+                      {slide.subtitle}
+                    </p>
+                  )}
+                  <Link
+                    href="/products"
+                    className="inline-flex items-center gap-3 bg-white text-black px-8 py-4 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-zinc-100 transition-colors active:scale-95 duration-150"
+                  >
+                    Explore Imports
+                    <span className="material-symbols-outlined" style={{ fontSize: "14px" }}>
+                      arrow_forward
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* ── Left arrow ── */}
+        <button
+          onClick={() => go(-1)}
+          aria-label="Previous slide"
+          className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white/10 backdrop-blur-sm border border-white/25 text-white hover:bg-white/25 hover:border-white/50 transition-all flex items-center justify-center"
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: "22px" }}>
+            chevron_left
+          </span>
+        </button>
+
+        {/* ── Right arrow ── */}
+        <button
+          onClick={() => go(1)}
+          aria-label="Next slide"
+          className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white/10 backdrop-blur-sm border border-white/25 text-white hover:bg-white/25 hover:border-white/50 transition-all flex items-center justify-center"
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: "22px" }}>
+            chevron_right
+          </span>
+        </button>
+
+        {/* ── Dot indicators ── */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrent(i)}
+              aria-label={`Slide ${i + 1}`}
+              className={`transition-all duration-300 ${
+                i === current
+                  ? "w-7 h-1.5 bg-white"
+                  : "w-1.5 h-1.5 rounded-full bg-white/40 hover:bg-white/70"
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* ── Slide counter ── */}
+        <div className="absolute bottom-[30px] right-8 sm:right-16 lg:right-28 z-20 text-white/35 text-[9px] font-mono tracking-[0.25em]">
+          {String(current + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        </div>
+      </div>
+
+      {/* ── Marquee (below carousel) ── */}
       {settings.marqueeText && (
-        <div className="bg-black text-white py-2 overflow-hidden mt-16 flex">
+        <div className="bg-black text-white py-2 overflow-hidden flex">
           <div className="flex w-max animate-[marquee_180s_linear_infinite]">
             <div className="flex shrink-0">
               {[...Array(15)].map((_, i) => (
-                <span key={`mq1-${i}`} className="flex-none whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.2em] pr-24">
+                <span
+                  key={`mq1-${i}`}
+                  className="flex-none whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.2em] pr-24"
+                >
                   {settings.marqueeText}
                 </span>
               ))}
             </div>
             <div className="flex shrink-0" aria-hidden="true">
               {[...Array(15)].map((_, i) => (
-                <span key={`mq2-${i}`} className="flex-none whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.2em] pr-24">
+                <span
+                  key={`mq2-${i}`}
+                  className="flex-none whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.2em] pr-24"
+                >
                   {settings.marqueeText}
                 </span>
               ))}
@@ -32,57 +172,6 @@ export default function StorefrontHero() {
           </div>
         </div>
       )}
-
-      <section className="pt-12 sm:pt-16 pb-16 sm:pb-24 px-4 sm:px-8 min-h-[calc(100svh-4rem)] flex flex-col justify-center relative bg-[var(--color-surface)] overflow-hidden">
-        <div className="max-w-[1920px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-
-          {/* Copy */}
-          <div className="lg:col-span-5 z-10 text-center lg:text-left">
-            {settings.promoBadge && (
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-outline)] font-bold mb-3 sm:mb-4 block">
-                {settings.promoBadge}
-              </span>
-            )}
-            <h1 className="text-[2.8rem] sm:text-[4rem] lg:text-[5rem] leading-[0.9] font-black tracking-tighter uppercase mb-5 sm:mb-8">
-              {settings.heroTitle}
-            </h1>
-            <p className="text-[var(--color-on-surface-variant)] max-w-md mx-auto lg:mx-0 mb-8 sm:mb-12 text-base sm:text-lg leading-relaxed">
-              {settings.heroSubtitle}
-            </p>
-            <div className="flex items-center justify-center lg:justify-start gap-5 sm:gap-8 flex-wrap">
-              <Link
-                href="/products"
-                className="bg-[var(--color-primary)] text-[var(--color-on-primary)] px-8 sm:px-10 py-3.5 sm:py-4 text-xs font-bold uppercase tracking-widest hover:bg-[var(--color-primary-container)] transition-colors active:scale-95 duration-200 inline-block"
-              >
-                Shop Now
-              </Link>
-              <Link
-                href="/specs"
-                className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest"
-              >
-                Technical Specs
-                <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">
-                  arrow_forward
-                </span>
-              </Link>
-            </div>
-          </div>
-
-          {/* Hero Image */}
-          <div className="lg:col-span-7 relative h-[280px] sm:h-[420px] lg:h-[600px] flex items-center justify-center">
-            <div className="absolute inset-0 bg-[var(--color-surface-container-low)] rounded-full scale-75 blur-3xl opacity-50" />
-            <div className="relative z-10 w-full h-full">
-              <Image
-                src={settings.heroImage}
-                alt="Storefront Hero Image"
-                fill
-                className="object-contain mix-blend-multiply"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </section>
     </>
   );
 }

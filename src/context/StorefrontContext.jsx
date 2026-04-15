@@ -5,11 +5,30 @@ import { createContext, useContext, useState, useEffect } from "react";
 const StorefrontContext = createContext(null);
 
 const DEFAULT_SETTINGS = {
-  heroTitle: "TECHNOLOGY REDEFINED.",
-  heroSubtitle: "Discover the next generation of premium tech gear.",
-  heroImage: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=2976",
+  heroSlides: [
+    {
+      id: "slide-1",
+      image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=2976",
+      title: "TECHNOLOGY\nREDEFINED.",
+      subtitle: "Discover the next generation of premium tech gear.",
+      badge: "2024 COLLECTION",
+    },
+    {
+      id: "slide-2",
+      image: "https://images.unsplash.com/photo-1593640408182-31c228b37b29?q=80&w=2940&auto=format&fit=crop",
+      title: "PREMIUM\nGAMING GEAR",
+      subtitle: "High-performance peripherals imported directly, no middleman.",
+      badge: "CURATED SELECTION",
+    },
+    {
+      id: "slide-3",
+      image: "https://images.unsplash.com/photo-1498049794561-7780e7231661?q=80&w=2940&auto=format&fit=crop",
+      title: "NEXT LEVEL\nTECHNOLOGY",
+      subtitle: "Direct imports. No noise. Just the pure essence of silicon and glass.",
+      badge: "NEW ARRIVALS",
+    },
+  ],
   marqueeText: "FREE SHIPPING ON ALL ORDERS OVER Gs. 500.000 • NEW ARRIVALS EVERY WEEK • PREMIUM IMPORTED GEAR",
-  promoBadge: "2024 COLLECTION",
   instagramUrl: "https://instagram.com",
   tiktokUrl: "https://tiktok.com",
   whatsappUrl: "https://wa.me/595000000000",

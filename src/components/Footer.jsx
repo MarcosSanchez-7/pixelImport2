@@ -4,16 +4,16 @@ import Link from "next/link";
 import { useStorefront } from "@/context/StorefrontContext";
 
 const footerNav = [
-  { href: "/products", label: "Imports" },
-  { href: "/specials", label: "Specials" },
-  { href: "/inventory", label: "Inventory" },
+  { href: "/products", label: "Productos" },
+  { href: "/specials", label: "Ofertas" },
+  { href: "/inventory", label: "Inventario" },
 ];
 
 const legalLinks = [
-  { href: "/terms", label: "Terms of Service" },
-  { href: "/privacy", label: "Privacy Policy" },
-  { href: "/specs", label: "Technical Specs" },
-  { href: "/support", label: "Support" },
+  { href: "/terms", label: "Términos de Servicio" },
+  { href: "/privacy", label: "Política de Privacidad" },
+  { href: "/specs", label: "Especificaciones" },
+  { href: "/support", label: "Soporte" },
 ];
 
 // SVG icons for pure vanilla CSS usage (no external libs)
@@ -91,7 +91,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-8">
           <div className="flex flex-col gap-4">
             <p className="text-[10px] font-black uppercase tracking-widest text-white mb-2">
-              Navigate
+              Navegar
             </p>
             {footerNav.map(({ href, label }) => (
               <Link
@@ -105,7 +105,7 @@ export default function Footer() {
           </div>
           <div className="flex flex-col gap-4">
             <p className="text-[10px] font-black uppercase tracking-widest text-white mb-2">
-              Legal & Support
+              Legal y Soporte
             </p>
             {legalLinks.map(({ href, label }) => (
               <Link
@@ -123,12 +123,12 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="px-5 sm:px-8 md:px-12 pb-8 w-full max-w-[1920px] mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-t border-white/5 pt-6">
         <p className="font-inter text-[10px] uppercase tracking-widest font-medium text-white/25">
-          © {new Date().getFullYear()} PIXELL IMPORT. ALL RIGHTS RESERVED.
+          © {new Date().getFullYear()} PIXELL IMPORT. TODOS LOS DERECHOS RESERVADOS.
         </p>
         <div className="flex items-center gap-3 text-white/25">
           <span className="material-symbols-outlined text-sm">globe</span>
           <p className="text-[10px] font-bold uppercase tracking-widest">
-            Global / EN
+            Paraguay / ES
           </p>
         </div>
       </div>

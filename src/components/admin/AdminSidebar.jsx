@@ -4,12 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navItems = [
-  { href: "/admin", label: "Dashboard", icon: "dashboard" },
-  { href: "/admin/products", label: "Products", icon: "inventory_2" },
-  { href: "/admin/storefront", label: "Storefront", icon: "web" },
-  { href: "/admin/media", label: "Media", icon: "photo_library" },
-  { href: "/admin/orders", label: "Orders", icon: "receipt_long" },
-  { href: "/admin/settings", label: "Settings", icon: "settings" },
+  { href: "/admin", label: "Panel", icon: "dashboard" },
+  { href: "/admin/products", label: "Productos", icon: "inventory_2" },
+  { href: "/admin/categories", label: "Categorías", icon: "account_tree" },
+  { href: "/admin/storefront", label: "Tienda", icon: "web" },
+  { href: "/admin/media", label: "Multimedia", icon: "photo_library" },
+  { href: "/admin/orders", label: "Pedidos", icon: "receipt_long" },
+  { href: "/admin/settings", label: "Ajustes", icon: "settings" },
 ];
 
 export default function AdminSidebar({ isOpen, onClose }) {
@@ -52,7 +53,7 @@ export default function AdminSidebar({ isOpen, onClose }) {
       {/* Nav */}
       <nav className="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
         <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-zinc-600 px-3 mb-3">
-          Management
+          Gestión
         </p>
         {navItems.map(({ href, label, icon }) => {
           const isActive =
@@ -91,7 +92,7 @@ export default function AdminSidebar({ isOpen, onClose }) {
           className="flex items-center gap-3 px-3 py-2.5 rounded text-zinc-500 hover:text-white hover:bg-zinc-800 transition-all duration-150 text-xs font-semibold uppercase tracking-widest"
         >
           <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>open_in_new</span>
-          View Store
+          Ver Tienda
         </Link>
         <div className="flex items-center gap-3 px-3 py-3 rounded bg-zinc-900">
           <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center shrink-0">

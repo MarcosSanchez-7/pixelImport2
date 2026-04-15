@@ -1,6 +1,7 @@
 "use client";
 
 import { useProducts } from "@/context/ProductsContext";
+import Link from "next/link";
 
 function StatCard({ label, value, sub, icon, accent }) {
   return (
@@ -18,7 +19,7 @@ function StatCard({ label, value, sub, icon, accent }) {
       >
         <span
           className={`material-symbols-outlined text-[20px] ${
-            accent === "white" ? "text-black" : 
+            accent === "white" ? "text-black" :
             accent === "amber" || accent === "emerald" ? "text-black" : "text-zinc-300"
           }`}
           style={{ fontSize: "20px" }}
@@ -49,9 +50,7 @@ function RecentRow({ product }) {
             className="w-full h-full object-contain p-1"
           />
         ) : (
-          <span className="material-symbols-outlined text-zinc-600 text-[18px]">
-            image
-          </span>
+          <span className="material-symbols-outlined text-zinc-600 text-[18px]">image</span>
         )}
       </div>
       <div className="flex-1 min-w-0">
@@ -71,7 +70,7 @@ function RecentRow({ product }) {
               : "text-emerald-400 bg-emerald-950"
           }`}
         >
-          {!product.visible ? "Hidden" : product.stock === 0 ? "Out of Stock" : product.stock < 5 ? "Low Stock" : "In Stock"}
+          {!product.visible ? "Oculto" : product.stock === 0 ? "Sin Stock" : product.stock < 5 ? "Poco Stock" : "En Stock"}
         </span>
       </div>
     </div>
@@ -93,49 +92,47 @@ export default function AdminDashboard() {
   const hiddenCount = products.filter((p) => !p.visible).length;
   const outOfStock = products.filter((p) => p.stock === 0).length;
   const totalValue = products.reduce((acc, p) => acc + p.price * p.stock, 0);
-
   const recentProducts = [...products].slice(0, 5);
-
-  const categories = [...new Set(products.map((p) => p.category))];
+  const categories = [...new Set(products.map((p) => p.category).filter(Boolean))];
 
   return (
     <div className="flex-1 overflow-y-auto bg-zinc-900">
       {/* Header */}
       <div className="px-4 sm:px-8 py-5 sm:py-7 border-b border-zinc-800">
         <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-bold mb-1">
-          OVERVIEW
+          RESUMEN
         </p>
-        <h1 className="text-white text-xl sm:text-2xl font-black tracking-tight">Dashboard</h1>
+        <h1 className="text-white text-xl sm:text-2xl font-black tracking-tight">Panel</h1>
       </div>
 
       <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
         {/* Stats grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
-            label="Total Products"
+            label="Total Productos"
             value={products.length}
-            sub={`${categories.length} categories`}
+            sub={`${categories.length} categorías`}
             icon="inventory_2"
             accent="white"
           />
           <StatCard
-            label="Visible"
+            label="Visibles"
             value={visibleCount}
-            sub={`${hiddenCount} hidden`}
+            sub={`${hiddenCount} ocultos`}
             icon="visibility"
             accent="emerald"
           />
           <StatCard
-            label="Low / Out of Stock"
+            label="Sin / Poco Stock"
             value={outOfStock}
-            sub={`${products.filter(p => p.stock > 0 && p.stock < 5).length} low stock`}
+            sub={`${products.filter(p => p.stock > 0 && p.stock < 5).length} con poco stock`}
             icon="warning"
             accent="amber"
           />
           <StatCard
-            label="Inventory Value"
+            label="Valor Inventario"
             value={`Gs. ${totalValue.toLocaleString("es-PY")}`}
-            sub="at list price"
+            sub="a precio de lista"
             icon="payments"
             accent="default"
           />
@@ -147,82 +144,86 @@ export default function AdminDashboard() {
           <div className="lg:col-span-2 bg-zinc-800 rounded border border-zinc-700/50 p-6">
             <div className="flex items-center justify-between mb-5">
               <p className="text-white text-xs font-black uppercase tracking-widest">
-                Product Inventory
+                Inventario
               </p>
-              <a
+              <Link
                 href="/admin/products"
                 className="text-[9px] font-bold uppercase tracking-widest text-zinc-400 hover:text-white transition-colors flex items-center gap-1"
               >
-                Manage all
-                <span className="material-symbols-outlined" style={{ fontSize: "13px" }}>
-                  arrow_forward
-                </span>
-              </a>
+                Ver todos
+                <span className="material-symbols-outlined" style={{ fontSize: "13px" }}>arrow_forward</span>
+              </Link>
             </div>
             <div>
-              {recentProducts.map((p) => (
-                <RecentRow key={p.id} product={p} />
-              ))}
+              {recentProducts.length === 0 ? (
+                <p className="text-zinc-600 text-sm py-6 text-center">Sin productos aún</p>
+              ) : (
+                recentProducts.map((p) => <RecentRow key={p.id} product={p} />)
+              )}
             </div>
           </div>
 
           {/* Category breakdown */}
           <div className="bg-zinc-800 rounded border border-zinc-700/50 p-6">
             <p className="text-white text-xs font-black uppercase tracking-widest mb-5">
-              By Category
+              Por Categoría
             </p>
             <div className="space-y-4">
-              {categories.map((cat) => {
-                const catProducts = products.filter((p) => p.category === cat);
-                const pct = Math.round((catProducts.length / products.length) * 100);
-                return (
-                  <div key={cat}>
-                    <div className="flex justify-between items-center mb-1.5">
-                      <span className="text-zinc-300 text-xs font-semibold uppercase tracking-wide">
-                        {cat}
-                      </span>
-                      <span className="text-zinc-500 text-[10px]">
-                        {catProducts.length} items
-                      </span>
+              {categories.length === 0 ? (
+                <p className="text-zinc-600 text-xs">Sin categorías asignadas</p>
+              ) : (
+                categories.map((cat) => {
+                  const catProducts = products.filter((p) => p.category === cat);
+                  const pct = Math.round((catProducts.length / products.length) * 100);
+                  return (
+                    <div key={cat}>
+                      <div className="flex justify-between items-center mb-1.5">
+                        <span className="text-zinc-300 text-xs font-semibold uppercase tracking-wide truncate mr-2">
+                          {cat}
+                        </span>
+                        <span className="text-zinc-500 text-[10px] shrink-0">
+                          {catProducts.length} art.
+                        </span>
+                      </div>
+                      <div className="h-1.5 bg-zinc-700 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-white rounded-full transition-all duration-500"
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
                     </div>
-                    <div className="h-1.5 bg-zinc-700 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-white rounded-full transition-all duration-500"
-                        style={{ width: `${pct}%` }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })
+              )}
             </div>
 
             {/* Quick actions */}
             <div className="mt-8 pt-6 border-t border-zinc-700 space-y-2">
               <p className="text-white text-xs font-black uppercase tracking-widest mb-3">
-                Quick Actions
+                Acciones Rápidas
               </p>
-              <a
+              <Link
                 href="/admin/products"
                 className="flex items-center gap-3 text-zinc-400 hover:text-white transition-colors py-2 text-xs font-semibold uppercase tracking-wide"
               >
                 <span className="material-symbols-outlined" style={{ fontSize: "16px" }}>add_circle</span>
-                Add New Product
-              </a>
-              <a
-                href="/admin/products"
+                Agregar Producto
+              </Link>
+              <Link
+                href="/admin/categories"
                 className="flex items-center gap-3 text-zinc-400 hover:text-white transition-colors py-2 text-xs font-semibold uppercase tracking-wide"
               >
-                <span className="material-symbols-outlined" style={{ fontSize: "16px" }}>edit</span>
-                Manage Inventory
-              </a>
-              <a
+                <span className="material-symbols-outlined" style={{ fontSize: "16px" }}>account_tree</span>
+                Gestionar Categorías
+              </Link>
+              <Link
                 href="/"
                 target="_blank"
                 className="flex items-center gap-3 text-zinc-400 hover:text-white transition-colors py-2 text-xs font-semibold uppercase tracking-wide"
               >
                 <span className="material-symbols-outlined" style={{ fontSize: "16px" }}>open_in_new</span>
-                Preview Store
-              </a>
+                Ver Tienda
+              </Link>
             </div>
           </div>
         </div>

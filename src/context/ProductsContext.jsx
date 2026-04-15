@@ -3,6 +3,23 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
 
+// Whitelist of actual DB columns — strips UI-only fields (isBestSeller, etc.)
+const DB_FIELDS = [
+  "id", "title", "brand", "sku", "category", "category_id",
+  "price", "sale_price", "stock", "badge", "description", "image", "images",
+  "visible", "tags", "specs", "created_at",
+];
+
+function toDbProduct(product) {
+  const db = {};
+  for (const key of DB_FIELDS) {
+    if (Object.prototype.hasOwnProperty.call(product, key)) {
+      db[key] = product[key];
+    }
+  }
+  return db;
+}
+
 const ProductsContext = createContext(null);
 
 export function ProductsProvider({ children }) {
@@ -50,12 +67,11 @@ export function ProductsProvider({ children }) {
       console.error("Supabase client not initialized");
       return newProduct;
     }
-    const { error } = await supabase.from("products").insert([newProduct]);
+    const { error } = await supabase.from("products").insert([toDbProduct(newProduct)]);
     if (error) {
-      console.error("Error adding product:", error);
-      // Rollback on fail
+      console.error("Error adding product:", error.message, "| details:", error.details, "| hint:", error.hint);
       setProducts((prev) => prev.filter((p) => p.id !== newProduct.id));
-      alert("Error saving to database");
+      alert(`Error al guardar: ${error.message || JSON.stringify(error)}`);
     }
     return newProduct;
   }, []);
@@ -66,15 +82,16 @@ export function ProductsProvider({ children }) {
       prev.map((p) => (p.id === id ? { ...p, ...updates } : p))
     );
 
-    // DB Update (remove created_at if it's there to avoid changing it)
-    const { created_at, ...safeUpdates } = updates;
+    // DB Update — strip UI-only fields and created_at
+    const { created_at, ...safeUpdates } = toDbProduct(updates);
     if (!supabase) {
       console.error("Supabase client not initialized");
       return;
     }
     const { error } = await supabase.from("products").update(safeUpdates).eq("id", id);
     if (error) {
-      console.error("Error updating product:", error);
+      console.error("Error updating product:", error.message, "| details:", error.details, "| hint:", error.hint);
+      alert(`Error al guardar: ${error.message || JSON.stringify(error)}`);
     }
   }, []);
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { ProductsProvider } from "@/context/ProductsContext";
+import { CategoriesProvider } from "@/context/CategoriesContext";
 import { CartProvider } from "@/context/CartContext";
 import { FavoritesProvider } from "@/context/FavoritesContext";
 import { StorefrontProvider } from "@/context/StorefrontContext";
@@ -12,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 export function Providers({ children }) {
   return (
     <StorefrontProvider>
+      <CategoriesProvider>
       <ProductsProvider>
         <CartProvider>
           <FavoritesProvider>
@@ -42,6 +44,7 @@ export function Providers({ children }) {
           </FavoritesProvider>
         </CartProvider>
       </ProductsProvider>
+      </CategoriesProvider>
     </StorefrontProvider>
   );
 }

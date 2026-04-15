@@ -31,7 +31,7 @@ export default function GeneralSettingsPage() {
     updateSettings(formData);
     setTimeout(() => {
       setIsSaving(false);
-      setSuccessMsg("Settings updated successfully.");
+      setSuccessMsg("Ajustes guardados correctamente.");
       setTimeout(() => setSuccessMsg(""), 3000);
     }, 500);
   };
@@ -41,10 +41,10 @@ export default function GeneralSettingsPage() {
       <div className="px-4 sm:px-8 py-5 sm:py-7 border-b border-zinc-800 flex justify-between items-center gap-4 bg-zinc-950/50 sticky top-0 z-10 backdrop-blur-md">
         <div>
           <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-bold mb-1">
-            Configuration
+            Configuración
           </p>
           <h1 className="text-white text-xl sm:text-2xl font-black tracking-tight">
-            Settings
+            Ajustes
           </h1>
         </div>
         <button
@@ -52,7 +52,7 @@ export default function GeneralSettingsPage() {
           disabled={isSaving}
           className="bg-white text-black px-4 sm:px-6 py-2.5 text-xs font-bold uppercase tracking-widest hover:bg-zinc-200 transition-colors disabled:opacity-50 shrink-0"
         >
-          {isSaving ? "Saving..." : "Save Settings"}
+          {isSaving ? "Guardando..." : "Guardar Ajustes"}
         </button>
       </div>
 
@@ -65,15 +65,15 @@ export default function GeneralSettingsPage() {
         )}
 
         <form onSubmit={handleSave} className="space-y-8">
-          {/* General Copy */}
+          {/* General Texts */}
           <div className="bg-zinc-800 p-5 sm:p-8 rounded border border-zinc-700/50">
-            <h2 className="text-white text-sm font-black uppercase tracking-widest border-b border-zinc-700 pb-4 mb-6 relative">
-              General / Texts
+            <h2 className="text-white text-sm font-black uppercase tracking-widest border-b border-zinc-700 pb-4 mb-6">
+              General / Textos
             </h2>
             <div className="grid grid-cols-1 gap-6">
               <div>
                 <label className="text-zinc-400 text-[10px] font-black uppercase tracking-widest block mb-2">
-                  Footer Description
+                  Descripción del Footer
                 </label>
                 <textarea
                   name="footerText"
@@ -81,10 +81,10 @@ export default function GeneralSettingsPage() {
                   onChange={handleChange}
                   rows={4}
                   className="w-full bg-zinc-900 border border-zinc-700 rounded px-4 py-3 text-white text-sm outline-none focus:border-white transition-colors resize-none"
-                  placeholder="Company description shown in footer"
+                  placeholder="Descripción de la empresa en el footer"
                 />
                 <p className="text-zinc-500 text-[10px] mt-2 leading-relaxed">
-                  This text appears at the bottom-left of every page below the logo.
+                  Aparece en la parte inferior izquierda de cada página, debajo del logo.
                 </p>
               </div>
             </div>
@@ -93,12 +93,12 @@ export default function GeneralSettingsPage() {
           {/* Social Links */}
           <div className="bg-zinc-800 p-5 sm:p-8 rounded border border-zinc-700/50">
             <h2 className="text-white text-sm font-black uppercase tracking-widest border-b border-zinc-700 pb-4 mb-6">
-              Social Links
+              Redes Sociales
             </h2>
             <div className="grid grid-cols-1 gap-6">
               <div>
-                <label className="text-zinc-400 text-[10px] font-black uppercase tracking-widest block mb-2 flex items-center gap-2">
-                  Instagram URL
+                <label className="text-zinc-400 text-[10px] font-black uppercase tracking-widest block mb-2">
+                  URL de Instagram
                 </label>
                 <input
                   type="url"
@@ -106,13 +106,13 @@ export default function GeneralSettingsPage() {
                   value={formData.instagramUrl}
                   onChange={handleChange}
                   className="w-full bg-zinc-900 border border-zinc-700 rounded px-4 py-3 text-white text-sm outline-none focus:border-white transition-colors"
-                  placeholder="https://instagram.com/yourprofile"
+                  placeholder="https://instagram.com/tuperfil"
                 />
               </div>
 
               <div>
-                <label className="text-zinc-400 text-[10px] font-black uppercase tracking-widest block mb-2 flex items-center gap-2">
-                  TikTok URL
+                <label className="text-zinc-400 text-[10px] font-black uppercase tracking-widest block mb-2">
+                  URL de TikTok
                 </label>
                 <input
                   type="url"
@@ -120,13 +120,13 @@ export default function GeneralSettingsPage() {
                   value={formData.tiktokUrl}
                   onChange={handleChange}
                   className="w-full bg-zinc-900 border border-zinc-700 rounded px-4 py-3 text-white text-sm outline-none focus:border-white transition-colors"
-                  placeholder="https://tiktok.com/@yourprofile"
+                  placeholder="https://tiktok.com/@tuperfil"
                 />
               </div>
 
               <div>
-                <label className="text-zinc-400 text-[10px] font-black uppercase tracking-widest block mb-2 flex items-center gap-2">
-                  WhatsApp URL
+                <label className="text-zinc-400 text-[10px] font-black uppercase tracking-widest block mb-2">
+                  URL de WhatsApp
                 </label>
                 <input
                   type="url"
@@ -134,10 +134,10 @@ export default function GeneralSettingsPage() {
                   value={formData.whatsappUrl}
                   onChange={handleChange}
                   className="w-full bg-zinc-900 border border-zinc-700 rounded px-4 py-3 text-white text-sm outline-none focus:border-white transition-colors"
-                  placeholder="https://wa.me/..."
+                  placeholder="https://wa.me/595981000000"
                 />
                 <p className="text-zinc-500 text-[10px] mt-2">
-                  Format typically: https://wa.me/CountryCodePhoneNumber (e.g. https://wa.me/595981000000)
+                  Formato: https://wa.me/CódigoPaísTeléfono — Ej: https://wa.me/595981000000
                 </p>
               </div>
             </div>

@@ -7,10 +7,10 @@ import { useCart } from "@/context/CartContext";
 import { useFavorites } from "@/context/FavoritesContext";
 
 const navLinks = [
-  { href: "/products", label: "Imports" },
-  { href: "/specials", label: "Specials" },
-  { href: "/inventory", label: "Inventory" },
-  { href: "/archive", label: "Archive" },
+  { href: "/products", label: "Productos" },
+  { href: "/specials", label: "Ofertas" },
+  { href: "/inventory", label: "Inventario" },
+  { href: "/archive", label: "Archivo" },
 ];
 
 export default function Navbar() {
@@ -92,7 +92,7 @@ export default function Navbar() {
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="SEARCH CATALOGUE"
+                placeholder="BUSCAR PRODUCTOS"
                 className="bg-zinc-50 border border-zinc-200 focus:border-black text-[10px] tracking-widest uppercase pl-9 pr-4 py-2 outline-none w-52 transition-all rounded"
               />
             </form>
@@ -163,7 +163,7 @@ export default function Navbar() {
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="SEARCH CATALOGUE"
+                placeholder="BUSCAR PRODUCTOS"
                 className="w-full bg-zinc-50 border border-zinc-200 focus:border-black text-[10px] tracking-widest uppercase pl-9 pr-4 py-2.5 outline-none transition-all rounded"
               />
             </form>
